@@ -1,0 +1,9 @@
+.profile__property {
+  margin: 0;
+  padding: 0;
+}
+@media screen and (max-width: 320px) {
+  .profile__property {
+    margin-left: 29px;
+  }
+}

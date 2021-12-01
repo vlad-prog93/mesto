@@ -1,0 +1,9 @@
+.popup__close {
+  margin-left: auto;
+  transition: all 0.3s linear;
+}
+
+.popup__close:hover {
+  cursor: pointer;
+  opacity: 0.6;
+}
