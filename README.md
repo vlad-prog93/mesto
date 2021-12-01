@@ -14,4 +14,4 @@
 
 
 **GidHub Pages**
-* [Ссылка на сайт в GidHub Pages]
+* [Ссылка на сайт в GidHub Pages]https://vlad-prog93.github.io/mesto/
