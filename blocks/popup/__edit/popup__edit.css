@@ -1,16 +1,30 @@
 .popup__edit {
-  margin: 34px 64px 0 13px;
+  margin: 34px auto 0;
+  width: 84%;
+  text-align: left;
   padding: 0;
   color: #000;
   font-weight: 900;
-  font-size: 24px;
+  font-size: calc(0.00789*100vw + 13.894px);
   line-height: 29px;
+}
+
+@media screen and (max-width: 1024px) {
+  .popup__edit {
+    text-align: center;
+  }
 }
 
 @media screen and (max-width: 525px) {
   .popup__edit {
-    margin: 25px auto;
+    margin-top: 30px;
     font-size: 18px;
     line-height: 22px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .popup__edit {
+    margin-top: 35px;
   }
 }

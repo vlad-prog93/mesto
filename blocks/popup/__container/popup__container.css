@@ -1,16 +1,16 @@
 .popup__container {
-  position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 495px;
-  height: 370px;
+  max-width: 495px;
+  min-width: 282px;
+  width: 38.6%;
+  min-height: 370px;
 }
 
 @media screen and (max-width: 525px) {
   .popup__container {
-    width: 282px;
-    height: 358px;
+    min-height: 358px;
   }
 }
