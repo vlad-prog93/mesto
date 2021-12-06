@@ -1,5 +1,6 @@
 .header__logo {
   width: 142px;
+  margin-bottom: 41px;
   transition: all linear 0.3s;
 }
 
@@ -11,5 +12,6 @@
   .header__logo {
     width: 104px;
     margin-left: 27px;
+    margin-bottom: 27px;
   }
 }

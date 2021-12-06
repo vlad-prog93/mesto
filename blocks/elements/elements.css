@@ -27,13 +27,12 @@
   .elements {
     grid-template-columns: calc(0.8 * 100vw);
     gap: 20px;
-    padding-top: 36px;
+    padding-top: 37px;
   }
 }
 
 @media screen and (max-width: 320px) {
   .elements {
     grid-template-columns: 361px;
-    padding-top: 32px;
   }
 }

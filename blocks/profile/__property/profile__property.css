@@ -1,4 +1,5 @@
 .profile__property {
+  display: flex;
   margin: 0;
   padding: 0;
 }
