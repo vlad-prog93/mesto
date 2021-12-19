@@ -1,47 +1,136 @@
-let profile = document.querySelector('.profile')
-let nameText = profile.querySelector('.profile__name');
-let jobText = profile.querySelector('.profile__job');
+const profile = document.querySelector('.profile')
+const nameText = profile.querySelector('.profile__name');
+const jobText = profile.querySelector('.profile__job');
 
-let popup = document.querySelector('.popup');
-let nameInput = popup.querySelector('#name-field');
-let jobInput = popup.querySelector('#job-field');
-let formElement = popup.querySelector('.popup__form');
+const popupEdit = document.querySelectorAll('.popup')[0];
+const popupAdd = document.querySelectorAll('.popup')[1];
+const popupZoom = document.querySelectorAll('.popup')[2];
 
-let openButton = document.querySelector('.profile__edit-button');
+const openButtonEdit = document.querySelector('.profile__edit-button');
+const openButtonAdd = document.querySelector('.profile__add-button');
 
-let closeButton = popup.querySelector('.popup__close');
+const nameInputEdit = popupEdit.querySelector('#name-field');
+const jobInputEdit = popupEdit.querySelector('#job-field');
+const nameInputAdd = popupAdd.querySelector('#place-field');
+const picInputAdd = popupAdd.querySelector('#pic-field');
+const picZoom = popupZoom.querySelector('.popup__photo');
+const picZoomAlt = popupZoom.querySelector('.popup__photo-alt');
+
+const formElement = document.querySelectorAll('.popup__form');
+const closeButton = document.querySelectorAll('.popup__close');
 
 
-//Функция для открытия popup
-function openPopup() {
-  popup.classList.add('popup_opened');
-  nameInput.value = nameText.textContent;
-  jobInput.value = jobText.textContent;
+const initialCards = [
+  {
+    name: 'Карачаевск',
+    link: './images/element/karachaevsk.jpg'
+  },
+  {
+    name: 'Домбай',
+    link: './images/element/dombai.jpg'
+  },
+  {
+    name: 'Эльбрус',
+    link: './images/element/elbrus.jpg'
+  },
+  {
+    name: 'Карачаево-Черкесская республика',
+    link: './images/element/kchr.jpeg'
+  },
+  {
+    name: 'Дагестан',
+    link: './images/element/dagestan.jpg'
+  },
+  {
+    name: 'Кабардино-Балкарская Республика',
+    link: './images/element/kbr.jpg'
+  }
+];
+
+initialCards.forEach((inCards) => addElement(inCards.link, inCards.name))
+
+
+openButtonEdit.addEventListener('click', openPopupEdit);
+openButtonAdd.addEventListener('click', openPopupAdd);
+
+formElement.forEach((forEl) => forEl.addEventListener('submit', formSubmitHandler));
+closeButton.forEach((clBut) => clBut.addEventListener('click', closePopup));
+
+
+
+function addElement (picture, namepicture) {
+  let elements, element, elementTemplate;
+  elementTemplate = document.querySelector('#element').content;
+  elements = document.querySelector('.elements');
+  element = elementTemplate.querySelector('.element').cloneNode(true);
+  element.querySelector('.element__photo').src = picture;
+  element.querySelector('.element__photo').alt = namepicture;
+  element.querySelector('.element__place').textContent = namepicture;
+  element.querySelector('.element__like').addEventListener('click', likeButton);
+  element.querySelector('.element__delete').addEventListener('click', delButton);
+  element.querySelector('.element__button-photo').addEventListener('click', ZoomButton);
+  elements.prepend(element);
 }
 
-// Функция для закрытия popup
-function closePopup() {
-  popup.classList.remove('popup_opened');
+
+
+function openPopupEdit() {
+  nameInputEdit.value = nameText.textContent;
+  jobInputEdit.value = jobText.textContent;
+  popupEdit.classList.add('popup_opened');
 }
 
-//Функция отправки формы
+function openPopupAdd() {
+  nameInputAdd.value = '';
+  picInputAdd.value = '';
+  nameInputAdd.placeholder= 'Название';
+  picInputAdd.placeholder = 'Ссылка на картинку';
+  popupAdd.classList.add('popup_opened');
+  }
+
+
+
 function formSubmitHandler(evt) {
   evt.preventDefault();
-  nameText.textContent = nameInput.value;
-  jobText.textContent = jobInput.value;
-  closePopup();
+  if (popupAdd.classList.contains('popup_opened')) {
+    addElement (picInputAdd.value, nameInputAdd.value);
+    closePopup();
+  } else if (popupEdit.classList.contains('popup_opened')) {
+    nameText.textContent = nameInputEdit.value;
+    jobText.textContent = jobInputEdit.value;
+    closePopup();
+  } else {
+    closePopup();
+  }
+}
+
+function closePopup() {
+  if (popupEdit.classList.contains('popup_opened')) {
+    popupEdit.classList.remove('popup_opened');
+  } else if (popupAdd.classList.contains('popup_opened')) {
+    popupAdd.classList.remove('popup_opened');
+  } else if (popupZoom.classList.contains('popup_opened')) {
+    popupZoom.classList.remove('popup_opened');
+  }
 }
 
 
 
-//Открываем popup
-openButton.addEventListener('click', openPopup);
+function likeButton() {
+  this.classList.toggle('element__like_active');
+};
 
-//Закрываем popup
-closeButton.addEventListener('click', closePopup);
+function delButton() {
+  this.closest('article').remove();
+}
 
- //При помощи "клика" отправить форму и закрыть popup
-formElement.addEventListener('submit', formSubmitHandler);
+function ZoomButton () {
+  let picture = this.firstElementChild
+  popupZoom.classList.add('popup_opened');
+  picZoom.src = picture.src;
+  picZoom.alt = picture.alt;
+  picZoomAlt.textContent = picture.alt;
+}
 
 /**
  При помощи "Enter" отправить форму и закрыть popup
@@ -50,10 +139,3 @@ if (event.key === 'Enter') {
 formSubmitHandler(event);
 }
 }); */
-
-/** Ставим лайк
-for (let likeButton of document.querySelectorAll('.element__like')){
-  likeButton.addEventListener('click', function () {
-    this.classList.toggle('element__like_active');
-});
-} */
