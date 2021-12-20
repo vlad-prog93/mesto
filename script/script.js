@@ -75,14 +75,14 @@ function openPopupAdd() {
 function formSubmitHandlerAdd(evt) {
   evt.preventDefault();
   addElement (picInputAdd.value, nameInputAdd.value);
-  closePopup(popupEdit);
+  closePopup(popupAdd);
 }
 
 function formSubmitHandlerEdit(evt) {
   evt.preventDefault();
   nameText.textContent = nameInputEdit.value;
   jobText.textContent = jobInputEdit.value;
-  closePopup(popupAdd);
+  closePopup(popupEdit);
 }
 
 function closePopup(popup) {
