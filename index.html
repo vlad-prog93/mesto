@@ -36,31 +36,31 @@
       <p class="footer__text">&copy; 2021 Mesto Russia</p>
     </footer>
 
-    <div class="popup">
+    <div class="popup popup__edit">
       <div class="popup__container">
         <button class="popup__close" type="button" aria-label="Закрыть"></button>
         <h2 class="popup__edit">Редактировать профиль</h2>
         <form class="popup__form" name="send-popup">
-          <input id="name-field" name="name-field" class="popup__input" type="text">
-          <input id="job-field" name="job-field" class="popup__input" type="text">
+          <input id="name-field" name="name-field" class="popup__input popup__name-field" type="text">
+          <input id="job-field" name="job-field" class="popup__input popup__job-field" type="text">
           <button class="popup__save" type="submit">Сохранить</button>
         </form>
       </div>
     </div>
 
-    <div class="popup">
+    <div class="popup popup__add">
       <div class="popup__container">
         <button class="popup__close" type="button" aria-label="Закрыть"></button>
         <h2 class="popup__edit">Новое место</h2>
         <form class="popup__form" name="send-popup">
-          <input id="place-field" name="place-name-field" class="popup__input" type="text">
-          <input id="pic-field" name="place-pic-field" class="popup__input" type="text">
+          <input id="place-field" name="place-name-field" class="popup__input popup__place-field" type="text">
+          <input id="pic-field" name="place-pic-field" class="popup__input popup__pic-field" type="text">
           <button class="popup__save" type="submit">Создать</button>
         </form>
       </div>
     </div>
 
-    <div class="popup">
+    <div class="popup popup__picture">
       <figure class="popup__photo-container">
         <button class="popup__close" type="button" aria-label="Закрыть"></button>
         <img class="popup__photo" src="#" alt="#">
@@ -80,7 +80,7 @@
       <button class="element__delete" type="button" aria-label="Удалить"></button>
     </article>
   </template>
-
+  <script src="./script/cards.js"></script>
   <script src="./script/script.js"></script>
 </body>
 
