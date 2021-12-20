@@ -2,18 +2,18 @@ const profile = document.querySelector('.profile')
 const nameText = profile.querySelector('.profile__name');
 const jobText = profile.querySelector('.profile__job');
 
-const popupEdit = document.querySelector('.popup__edit');
-const popupAdd = document.querySelector('.popup__add');
-const popupZoom = document.querySelector('.popup__picture');
+const popupEdit = document.querySelector('.edit_popup');
+const popupAdd = document.querySelector('.add_popup');
+const popupZoom = document.querySelector('.picture_popup');
 const popupAll = document.querySelectorAll('.popup');
 
 const openButtonEdit = document.querySelector('.profile__edit-button');
 const openButtonAdd = document.querySelector('.profile__add-button');
 
-const nameInputEdit = popupEdit.querySelector('.popup__name-field');
-const jobInputEdit = popupEdit.querySelector('.popup__job-field');
-const nameInputAdd = popupAdd.querySelector('.popup__place-field');
-const picInputAdd = popupAdd.querySelector('.popup__pic-field');
+const nameInputEdit = popupEdit.querySelector('.name-field_popup');
+const jobInputEdit = popupEdit.querySelector('.job-field_popup');
+const nameInputAdd = popupAdd.querySelector('.place-field_popup');
+const picInputAdd = popupAdd.querySelector('.pic-field_popup');
 
 const picZoom = popupZoom.querySelector('.popup__photo');
 const picZoomAlt = popupZoom.querySelector('.popup__photo-alt');
