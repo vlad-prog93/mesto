@@ -27,6 +27,7 @@ const elementTemplate = document.querySelector('#element').content;
 const elements = document.querySelector('.elements');
 
 
+
 initialCards.forEach((inCards) => addElement(inCards.link, inCards.name))
 
 
@@ -54,7 +55,9 @@ function addElement (picture, namePicture) {
 }
 
 function openPopup(popup) {
-  popup.classList.add('popup_opened')
+  popup.classList.add('popup_opened');
+  closePopupByClick(popup);
+  closePopupByEsc(popup);
 }
 
 function openPopupEdit() {
@@ -69,7 +72,7 @@ function openPopupAdd() {
   nameInputAdd.placeholder= 'Название';
   picInputAdd.placeholder = 'Ссылка на картинку';
   openPopup(popupAdd);
-  }
+}
 
 
 function formSubmitHandlerAdd(evt) {
@@ -91,7 +94,7 @@ function closePopup(popup) {
 
 function likeCard() {
   this.classList.toggle('element__like_active');
-};
+}
 
 function deleteCard() {
   this.closest('article').remove();
@@ -105,7 +108,40 @@ function openPreviewImage (link, name) {
   
 }
 
-/**
+function closePopupByClick(popup) {
+  document.addEventListener('click', (evt) => {
+    if (evt.target === popup) {
+      closePopup(popup);
+      evt.target.removeEventListener('click', closePopupByClick);
+    }
+  });
+}
+
+function closePopupByEsc(popup) {
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape') {
+      closePopup(popup);
+      evt.target.removeEventListener('click', closePopupByEsc);
+    }
+  })
+}
+
+
+/*
+popupAll.forEach((popup) => {
+  closePopupByClick(popup);
+  closePopupByEsc(popup);
+  
+})
+
+popupAll.forEach((popup) => {
+  document.addEventListener('click', (evt) => {
+    if (evt.target === popup) {
+      closePopup(popup);
+    }
+  });
+})
+
  При помощи "Enter" отправить форму и закрыть popup
 window.addEventListener('keyup', function (event) {
 if (event.key === 'Enter') {
