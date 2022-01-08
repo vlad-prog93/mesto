@@ -22,6 +22,7 @@ const formElementEdit = popupEdit.querySelector('.popup__form');
 const formElementAdd = popupAdd.querySelector('.popup__form');
 
 const closeButtons = document.querySelectorAll('.popup__close');
+const saveButtonAdd = popupAdd.querySelector('.popup__save');
 
 const elementTemplate = document.querySelector('#element').content;
 const elements = document.querySelector('.elements');
@@ -34,10 +35,10 @@ initialCards.forEach((inCards) => addElement(inCards.link, inCards.name))
 openButtonEdit.addEventListener('click', openPopupEdit);
 openButtonAdd.addEventListener('click', openPopupAdd);
 
-formElementEdit.addEventListener('submit', formSubmitHandlerEdit);
-formElementAdd.addEventListener('submit', formSubmitHandlerAdd);
+formElementEdit.addEventListener('submit', submitFormEdit);
+formElementAdd.addEventListener('submit', submitFormAdd);
 
-closeButtons.forEach(function hi(closeButton, index) {
+closeButtons.forEach((closeButton, index) => {
   closeButton.addEventListener('click', () => closePopup(popupAll[index]))
 });
 
@@ -56,8 +57,8 @@ function addElement (picture, namePicture) {
 
 function openPopup(popup) {
   popup.classList.add('popup_opened');
-  closePopupByClick(popup);
-  closePopupByEsc(popup);
+  popup.addEventListener('mousedown', closeByMouseDown);
+  document.addEventListener('keydown', closeByEsc);
 }
 
 function openPopupEdit() {
@@ -69,19 +70,19 @@ function openPopupEdit() {
 function openPopupAdd() {
   nameInputAdd.value = '';
   picInputAdd.value = '';
-  nameInputAdd.placeholder= 'Название';
-  picInputAdd.placeholder = 'Ссылка на картинку';
+  saveButtonAdd.disabled = true;
+  saveButtonAdd.classList.add('popup__save_inactive');
   openPopup(popupAdd);
 }
 
 
-function formSubmitHandlerAdd(evt) {
+function submitFormAdd(evt) {
   evt.preventDefault();
-  addElement (picInputAdd.value, nameInputAdd.value);
+  addElement(picInputAdd.value, nameInputAdd.value);
   closePopup(popupAdd);
 }
 
-function formSubmitHandlerEdit(evt) {
+function submitFormEdit(evt) {
   evt.preventDefault();
   nameText.textContent = nameInputEdit.value;
   jobText.textContent = jobInputEdit.value;
@@ -90,6 +91,8 @@ function formSubmitHandlerEdit(evt) {
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
+  popup.removeEventListener('mousedown', closeByMouseDown);
+  document.removeEventListener('keydown', closeByEsc);
 }
 
 function likeCard() {
@@ -108,22 +111,17 @@ function openPreviewImage (link, name) {
   
 }
 
-function closePopupByClick(popup) {
-  document.addEventListener('click', (evt) => {
-    if (evt.target === popup) {
-      closePopup(popup);
-      evt.target.removeEventListener('click', closePopupByClick);
-    }
-  });
+function closeByMouseDown(evt) {
+  if (evt.target === evt.currentTarget) {
+    closePopup(evt.currentTarget);
+  }
 }
 
-function closePopupByEsc(popup) {
-  document.addEventListener('keydown', (evt) => {
-    if (evt.key === 'Escape') {
-      closePopup(popup);
-      evt.target.removeEventListener('click', closePopupByEsc);
-    }
-  })
+function closeByEsc(evt) {
+  if (evt.key === 'Escape') {
+    const popupOpened = document.querySelector('.popup_opened');
+    closePopup(popupOpened);
+  }
 }
 
 
