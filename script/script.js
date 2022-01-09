@@ -42,6 +42,7 @@ closeButtons.forEach((closeButton, index) => {
   closeButton.addEventListener('click', () => closePopup(popupAll[index]))
 });
 
+popupAll.forEach((popup) => popup.addEventListener('mousedown', closeByMouseDown));
 
 function addElement (picture, namePicture) {
   const element = elementTemplate.querySelector('.element').cloneNode(true);
@@ -57,7 +58,6 @@ function addElement (picture, namePicture) {
 
 function openPopup(popup) {
   popup.classList.add('popup_opened');
-  popup.addEventListener('mousedown', closeByMouseDown);
   document.addEventListener('keydown', closeByEsc);
 }
 
@@ -70,8 +70,7 @@ function openPopupEdit() {
 function openPopupAdd() {
   nameInputAdd.value = '';
   picInputAdd.value = '';
-  saveButtonAdd.disabled = true;
-  saveButtonAdd.classList.add('popup__save_inactive');
+  toggleModeButton(saveButtonAdd, true, 'popup__save_inactive');
   openPopup(popupAdd);
 }
 
@@ -91,7 +90,6 @@ function submitFormEdit(evt) {
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
-  popup.removeEventListener('mousedown', closeByMouseDown);
   document.removeEventListener('keydown', closeByEsc);
 }
 
@@ -123,7 +121,6 @@ function closeByEsc(evt) {
     closePopup(popupOpened);
   }
 }
-
 
 /*
 popupAll.forEach((popup) => {

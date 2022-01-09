@@ -51,13 +51,21 @@ function hasInvalidInput(inputList) {
 
 function toggleButtonState(inputList, buttonElement, selectors) {
     if (hasInvalidInput(inputList)) {
-      buttonElement.setAttribute('disabled', true);
-      buttonElement.classList.add(selectors.inactiveButtonClass);
+      toggleModeButton(buttonElement, true, selectors.inactiveButtonClass);
     } else {
-      buttonElement.removeAttribute('disabled');
-      buttonElement.classList.remove(selectors.inactiveButtonClass);
+      toggleModeButton(buttonElement, false, selectors.inactiveButtonClass);
     }
-}; 
+};
+
+function toggleModeButton(button, condition, selector) {
+  if (condition === true) {
+    button.disabled = true;
+    button.classList.add(selector);
+  } else {
+    button.disabled = false;
+    button.classList.remove(selector);
+  }
+}
 
 enableValidation({
   formSelector: '.popup__form',
