@@ -6,90 +6,83 @@ const selectors = {
 
 const elements = document.querySelector('.elements');
 
+const popupImage = document.querySelector('.popup-picture');
+const popupCloseImageButton = popupImage.querySelector('.popup__close');
+
 class Card {
 	constructor(card, selector) {
 		this._name = card.name;
 		this._link = card.link;
 		this._selector = selector;
-    this._cardElement = this._getElement();
 	}
 	
-	_getElement() {
-		this._element = document
+	_getTemplate() {
+		const cardElement = document
 		.querySelector(`#${this._selector}`)
 		.content
 		.querySelector(`.${this._selector}`)
 		.cloneNode(true);
-		return this._element;
+
+		return cardElement;
 	}
 
   _setEventListeners() {
-    this._cardElement.querySelector('.element__like').addEventListener('click', () => {
+    this._element.querySelector('.element__like').addEventListener('click', () => {
       this._handleLikeCard();
     });
 
-    this._cardElement.querySelector('.element__delete').addEventListener('click', () => {
+    this._element.querySelector('.element__delete').addEventListener('click', () => {
       this._handleDeleteCard();
     });
 
-    this._cardElement.querySelector('.element__button-photo').addEventListener('click', () => {
+    this._element.querySelector('.element__button-photo').addEventListener('click', () => {
       this._handleOpenPopup();
     });
+
+    popupCloseImageButton.addEventListener('click', () => {
+      this._handleClosePopup();
+    })
   }
 	
   _handleOpenPopup() {
-    this._cardElement.querySelector('.element__button-photo').classList.add('popup_opened');
+    popupImage.classList.add('popup_opened');
+    popupImage.querySelector('.popup__photo').src = this._link;
+    popupImage.querySelector('.popup__photo').alt = this._name;
+    popupImage.querySelector('.popup__photo-alt').textContent = this._name;
   }
 
   _handleClosePopup() {
-
+    popupImage.classList.remove('popup_opened');
+    popupImage.querySelector('.popup__photo').src = '';
+    popupImage.querySelector('.popup__photo').alt = '';
+    popupImage.querySelector('.popup__photo-alt').textContent = '';
   }
 
   _handleLikeCard() {
-    this._cardElement.querySelector('.element__like').classList.toggle('element__like_active');
+    this._element.querySelector('.element__like').classList.toggle('element__like_active');
   }
 
   _handleDeleteCard() {
-    this._cardElement.querySelector('.element__delete').closest('article').remove();
+    this._element.querySelector('.element__delete').closest('article').remove();
   }
 
 	generateElement() {
+    this._element = this._getTemplate();
     this._setEventListeners();
-		const photoElement = this._cardElement.querySelector('.element__photo');
-		const namePlace = this._cardElement.querySelector('.element__place');
-		photoElement.src = this._link;
-		photoElement.alt = this._name;
-		namePlace.textContent = this._name;
-		
+		this._element.querySelector('.element__photo').src = this._link;
+    this._element.querySelector('.element__photo').alt = this._name;
+		this._element.querySelector('.element__place').textContent = this._name;
     
-		document.querySelector('.elements').prepend(this._cardElement);
+    return this._element;
 	}
 }
 
-initialCards.forEach((card) => {
-	const cardElement = new Card(card, 'element');
-	cardElement.generateElement();
+initialCards.forEach((item) => {
+	const card = new Card(item, 'element');
+	const cardElement = card.generateElement();
+  elements.prepend(cardElement);
 })
 
-
-
-
-
-
-
-
-
-function addElement (picture, namePicture) {
-  const element = elementTemplate.querySelector('.element').cloneNode(true);
-  const elementPhoto = element.querySelector('.element__photo');
-  elementPhoto.src = picture;
-  elementPhoto.alt = namePicture;
-  element.querySelector('.element__place').textContent = namePicture;
-  element.querySelector('.element__like').addEventListener('click', likeCard);
-  element.querySelector('.element__delete').addEventListener('click', deleteCard);
-  element.querySelector('.element__button-photo').addEventListener('click', () => openPreviewImage(picture, namePicture));
-  elements.prepend(element);
-}
 
 function openPopup(popup) {
   popup.classList.add('popup_opened');
