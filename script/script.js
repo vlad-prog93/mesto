@@ -1,48 +1,51 @@
-const profile = document.querySelector('.profile')
-const nameText = profile.querySelector('.profile__name');
-const jobText = profile.querySelector('.profile__job');
+const selectors = {
+  cardSelector: '#element',
+  nameImageSelector: '.element__photo'
+}
 
-const popupEdit = document.querySelector('.popup-edit');
-const popupAdd = document.querySelector('.popup-add');
-const popupZoom = document.querySelector('.popup-picture');
-const popupAll = document.querySelectorAll('.popup');
 
-const openButtonEdit = document.querySelector('.profile__edit-button');
-const openButtonAdd = document.querySelector('.profile__add-button');
-
-const nameInputEdit = popupEdit.querySelector('.popup-name');
-const jobInputEdit = popupEdit.querySelector('.popup-job');
-const nameInputAdd = popupAdd.querySelector('.popup-place');
-const picInputAdd = popupAdd.querySelector('.popup-pic');
-
-const picZoom = popupZoom.querySelector('.popup__photo');
-const picZoomAlt = popupZoom.querySelector('.popup__photo-alt');
-
-const formElementEdit = popupEdit.querySelector('.popup__form');
-const formElementAdd = popupAdd.querySelector('.popup__form');
-
-const closeButtons = document.querySelectorAll('.popup__close');
-const saveButtonAdd = popupAdd.querySelector('.popup__save');
-
-const elementTemplate = document.querySelector('#element').content;
 const elements = document.querySelector('.elements');
 
+class Card {
+	constructor(card, selector) {
+		this._name = card.name;
+		this._link = card.link;
+		this._selector = selector;
+	}
+	
+	_getElement() {
+		this._element = document
+		.querySelector(`#${this._selector}`)
+		.content
+		.querySelector(`.${this._selector}`)
+		.cloneNode(true);
+		return this._element;
+	}
+	
+	loadDataToElement() {
+		const element = this._getElement();
+		const photoElement = element.querySelector('.element__photo');
+		const namePlace = element.querySelector('.element__place');
+		photoElement.src = this._link;
+		photoElement.alt = this._name;
+		namePlace.textContent = this._name;
+		
+		document.querySelector('.elements').prepend(element); //тут вопрос??? не понятно
+	}
+}
+
+initialCards.forEach((card) => {
+	const cardElement = new Card(card, 'element');
+	cardElement.loadDataToElement();
+})
 
 
-initialCards.forEach((inCards) => addElement(inCards.link, inCards.name))
 
 
-openButtonEdit.addEventListener('click', openPopupEdit);
-openButtonAdd.addEventListener('click', openPopupAdd);
 
-formElementEdit.addEventListener('submit', submitFormEdit);
-formElementAdd.addEventListener('submit', submitFormAdd);
 
-closeButtons.forEach((closeButton, index) => {
-  closeButton.addEventListener('click', () => closePopup(popupAll[index]))
-});
 
-popupAll.forEach((popup) => popup.addEventListener('mousedown', closeByMouseDown));
+
 
 function addElement (picture, namePicture) {
   const element = elementTemplate.querySelector('.element').cloneNode(true);
@@ -70,7 +73,7 @@ function openPopupEdit() {
 function openPopupAdd() {
   nameInputAdd.value = '';
   picInputAdd.value = '';
-  toggleModeButton(saveButtonAdd, true, 'popup__save_inactive');
+  enableButton(saveButtonAdd, 'popup__save_inactive');
   openPopup(popupAdd);
 }
 
@@ -121,25 +124,3 @@ function closeByEsc(evt) {
     closePopup(popupOpened);
   }
 }
-
-/*
-popupAll.forEach((popup) => {
-  closePopupByClick(popup);
-  closePopupByEsc(popup);
-  
-})
-
-popupAll.forEach((popup) => {
-  document.addEventListener('click', (evt) => {
-    if (evt.target === popup) {
-      closePopup(popup);
-    }
-  });
-})
-
- При помощи "Enter" отправить форму и закрыть popup
-window.addEventListener('keyup', function (event) {
-if (event.key === 'Enter') {
-formSubmitHandler(event);
-}
-}); */
