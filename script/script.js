@@ -11,6 +11,7 @@ class Card {
 		this._name = card.name;
 		this._link = card.link;
 		this._selector = selector;
+    this._cardElement = this._getElement();
 	}
 	
 	_getElement() {
@@ -21,22 +22,53 @@ class Card {
 		.cloneNode(true);
 		return this._element;
 	}
+
+  _setEventListeners() {
+    this._cardElement.querySelector('.element__like').addEventListener('click', () => {
+      this._handleLikeCard();
+    });
+
+    this._cardElement.querySelector('.element__delete').addEventListener('click', () => {
+      this._handleDeleteCard();
+    });
+
+    this._cardElement.querySelector('.element__button-photo').addEventListener('click', () => {
+      this._handleOpenPopup();
+    });
+  }
 	
-	loadDataToElement() {
-		const element = this._getElement();
-		const photoElement = element.querySelector('.element__photo');
-		const namePlace = element.querySelector('.element__place');
+  _handleOpenPopup() {
+    this._cardElement.querySelector('.element__button-photo').classList.add('popup_opened');
+  }
+
+  _handleClosePopup() {
+
+  }
+
+  _handleLikeCard() {
+    this._cardElement.querySelector('.element__like').classList.toggle('element__like_active');
+  }
+
+  _handleDeleteCard() {
+    this._cardElement.querySelector('.element__delete').closest('article').remove();
+  }
+
+	generateElement() {
+    this._setEventListeners();
+		const photoElement = this._cardElement.querySelector('.element__photo');
+		const namePlace = this._cardElement.querySelector('.element__place');
 		photoElement.src = this._link;
 		photoElement.alt = this._name;
 		namePlace.textContent = this._name;
 		
-		document.querySelector('.elements').prepend(element); //тут вопрос??? не понятно
+    
+		document.querySelector('.elements').prepend(this._cardElement);
 	}
 }
 
 initialCards.forEach((card) => {
 	const cardElement = new Card(card, 'element');
-	cardElement.loadDataToElement();
+	cardElement.generateElement();
 })
 
 
@@ -109,7 +141,6 @@ function openPreviewImage (link, name) {
   picZoom.alt = name;
   picZoomAlt.textContent = name;
   openPopup(popupZoom);
-  
 }
 
 function closeByMouseDown(evt) {
