@@ -70,20 +70,21 @@ function hasInvalidInput(inputList) {
 
 function toggleButtonState(inputList, buttonElement, selectors) {
     if (hasInvalidInput(inputList)) {
-      toggleModeButton(buttonElement, true, selectors.inactiveButtonClass);
+      enableButton(buttonElement, selectors.inactiveButtonClass);
     } else {
-      toggleModeButton(buttonElement, false, selectors.inactiveButtonClass);
+      disableButton(buttonElement, selectors.inactiveButtonClass);
     }
 };
 
-function toggleModeButton(button, condition, selector) {
-  if (condition === true) {
+
+
+function enableButton(button, selector) {
     button.disabled = true;
     button.classList.add(selector);
-  } else {
+}
+function disableButton(button, selector) {
     button.disabled = false;
     button.classList.remove(selector);
-  }
 }
 
 enableValidation({
