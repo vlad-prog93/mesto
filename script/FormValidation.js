@@ -1,3 +1,22 @@
+export {toggleModeButton}
+import {forms} from './index.js';
+
+class FormValidator {
+  constructor(selectors, formElement) {
+
+  }
+
+
+
+  enableValidation() {
+
+  }
+}
+
+forms.forEach((form) => {
+  
+})
+
 function showInputError(formElement, inputElement, errorMessage, selectors) {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
 
