@@ -99,13 +99,20 @@ class FormValidation {
     this._errorClass = errorClass;
     this._form = form;
   }
-  
+
+  _checkInputValidity(this._form, inputElement, selectors) {
+    if (!inputElement.validity.valid) {
+        showInputError(formElement, inputElement, inputElement.validationMessage, selectors);
+    } else {
+        hideInputError(formElement, inputElement, selectors);
+    }
+}
 
 }
 
 
-const forms = document.form;
-forms.forEach((formItem) => {
-  const form = new FormValidator(selectors, formItem);
+const formList = document.form;
+formList.forEach((formElement) => {
+  const form = new FormValidator(selectors, formElement);
   form.enableValidation();
 }) 
