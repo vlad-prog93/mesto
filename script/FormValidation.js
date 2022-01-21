@@ -1,22 +1,6 @@
 export {toggleModeButton}
 import {forms} from './index.js';
 
-class FormValidator {
-  constructor(selectors, formElement) {
-
-  }
-
-
-
-  enableValidation() {
-
-  }
-}
-
-forms.forEach((form) => {
-  
-})
-
 function showInputError(formElement, inputElement, errorMessage, selectors) {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
 
@@ -95,3 +79,33 @@ enableValidation({
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__input-error_active'
 });
+
+selectors({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__save',
+  inactiveButtonClass: 'popup__save_inactive',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active'
+});
+
+class FormValidation {
+  constructor(selectors, form) {
+    this._formSelector = selectors.formSelector;
+    this._inputSelector = inputSelector;
+    this._submitButtonSelector = submitButtonSelector;
+    this._inactiveButtonClass = inactiveButtonClass;
+    this._inputErrorClass = inputErrorClass;
+    this._errorClass = errorClass;
+    this._form = form;
+  }
+  
+
+}
+
+
+const forms = document.form;
+forms.forEach((formItem) => {
+  const form = new FormValidator(selectors, formItem);
+  form.enableValidation();
+}) 
