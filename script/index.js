@@ -1,14 +1,14 @@
-export {popupImage, forms};
+export {popupImage};
 import {Card} from './Card.js';
-import {toggleModeButton} from './FormValidation.js';
+import {FormValidator } from './FormValidation.js';
 
-const forms = document.forms;
 const profile = document.querySelector('.profile')
 const nameText = profile.querySelector('.profile__name');
 const jobText = profile.querySelector('.profile__job');
 
 const popupEdit = document.querySelector('.popup-edit');
 const popupAdd = document.querySelector('.popup-add');
+const popupImage = document.querySelector('.popup-picture');
 const popupAll = document.querySelectorAll('.popup');
 
 const openButtonEdit = document.querySelector('.profile__edit-button');
@@ -27,8 +27,9 @@ const saveButtonAdd = popupAdd.querySelector('.popup__save');
 
 const elements = document.querySelector('.elements');
 
-const popupImage = document.querySelector('.popup-picture');
 
+
+//Настройка для создания карточек
 const initialCards = [
   {
     name: 'Карачаевск',
@@ -56,6 +57,16 @@ const initialCards = [
   }
 ];
 
+// Настройка для форм
+const selectors = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__save',
+  inactiveButtonClass: 'popup__save_inactive',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active'
+};
+
 
 initialCards.forEach((item) => {
 	const card = new Card(item, 'element');
@@ -76,6 +87,13 @@ closeButtons.forEach((closeButton, index) => {
 
 popupAll.forEach((popup) => popup.addEventListener('mousedown', closeByMouseDown));
 
+//добавляем валидацию для форм
+const formList = Array.from(document.querySelectorAll(selectors.formSelector));
+formList.forEach((formElement) => {
+  const form = new FormValidator(selectors, formElement);
+  form.enableValidation();
+}) 
+
 function openPopup(popup) {
   popup.classList.add('popup_opened');
   document.addEventListener('keydown', closeByEsc);
@@ -90,7 +108,7 @@ function openPopupEdit() {
 function openPopupAdd() {
   nameInputAdd.value = '';
   picInputAdd.value = '';
-  toggleModeButton(saveButtonAdd, true, 'popup__save_inactive');
+  disableButton(saveButtonAdd, 'popup__save_inactive');
   openPopup(popupAdd);
 }
 
@@ -134,4 +152,9 @@ function closeByEsc(evt) {
     const popupOpened = document.querySelector('.popup_opened');
     closePopup(popupOpened);
   }
+}
+
+function disableButton(button, inactiveButtonClass) {
+  button.disabled = true;
+  button.classList.add(`${inactiveButtonClass}`)
 }
