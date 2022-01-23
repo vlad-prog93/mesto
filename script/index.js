@@ -1,6 +1,8 @@
 export {popupImage};
 import {Card} from './Card.js';
+import {initialCards} from './dataCards.js';
 import {FormValidator } from './FormValidation.js';
+import {popupImage, openPopup, closePopup} from './utils.js';
 
 const profile = document.querySelector('.profile')
 const nameText = profile.querySelector('.profile__name');
@@ -8,7 +10,7 @@ const jobText = profile.querySelector('.profile__job');
 
 const popupEdit = document.querySelector('.popup-edit');
 const popupAdd = document.querySelector('.popup-add');
-const popupImage = document.querySelector('.popup-picture');
+
 const popupAll = document.querySelectorAll('.popup');
 
 const openButtonEdit = document.querySelector('.profile__edit-button');
@@ -23,39 +25,12 @@ const formElementEdit = popupEdit.querySelector('.popup__form');
 const formElementAdd = popupAdd.querySelector('.popup__form');
 
 const closeButtons = document.querySelectorAll('.popup__close');
-const saveButtonAdd = popupAdd.querySelector('.popup__save');
 
 const elements = document.querySelector('.elements');
 
 
 
-//Настройка для создания карточек
-const initialCards = [
-  {
-    name: 'Карачаевск',
-    link: './images/element/karachaevsk.jpg'
-  },
-  {
-    name: 'Домбай',
-    link: './images/element/dombai.jpg'
-  },
-  {
-    name: 'Эльбрус',
-    link: './images/element/elbrus.jpg'
-  },
-  {
-    name: 'Карачаево-Черкесская республика',
-    link: './images/element/kchr.jpeg'
-  },
-  {
-    name: 'Дагестан',
-    link: './images/element/dagestan.jpg'
-  },
-  {
-    name: 'Кабардино-Балкарская Республика',
-    link: './images/element/kbr.jpg'
-  }
-];
+
 
 // Настройка для форм
 const selectors = {
@@ -69,9 +44,7 @@ const selectors = {
 
 
 initialCards.forEach((item) => {
-	const card = new Card(item, 'element');
-	const cardElement = card.generateElement();
-  elements.prepend(cardElement);
+	createCard(item);
 })
 
 
@@ -88,16 +61,13 @@ closeButtons.forEach((closeButton, index) => {
 popupAll.forEach((popup) => popup.addEventListener('mousedown', closeByMouseDown));
 
 //добавляем валидацию для форм
-const formList = Array.from(document.querySelectorAll(selectors.formSelector));
-formList.forEach((formElement) => {
-  const form = new FormValidator(selectors, formElement);
-  form.enableValidation();
-}) 
+const formEdit = new FormValidator(selectors, formElementEdit);
+formEdit.enableValidation();
 
-function openPopup(popup) {
-  popup.classList.add('popup_opened');
-  document.addEventListener('keydown', closeByEsc);
-}
+const formAdd = new FormValidator(selectors, formElementAdd);
+formAdd.enableValidation();
+
+
 
 function openPopupEdit() {
   nameInputEdit.value = nameText.textContent;
@@ -108,7 +78,7 @@ function openPopupEdit() {
 function openPopupAdd() {
   nameInputAdd.value = '';
   picInputAdd.value = '';
-  disableButton(saveButtonAdd, 'popup__save_inactive');
+  formAdd.enableButton();
   openPopup(popupAdd);
 }
 
@@ -131,30 +101,17 @@ function createNewCard() {
     name: nameInputAdd.value,
     link: picInputAdd.value
   }
-  const card = new Card(itemsNewCard, 'element');
-	const cardElement = card.generateElement();
-  elements.prepend(cardElement);
+  createCard(itemsNewCard)
 }
 
-function closePopup(popup) {
-  popup.classList.remove('popup_opened');
-  document.removeEventListener('keydown', closeByEsc);
+function createCard(item) {
+  const card = new Card(item, 'element');
+	const cardElement = card.generateElement();
+  elements.prepend(cardElement);
 }
 
 function closeByMouseDown(evt) {
   if (evt.target === evt.currentTarget) {
     closePopup(evt.currentTarget);
   }
-}
-
-function closeByEsc(evt) {
-  if (evt.key === 'Escape') {
-    const popupOpened = document.querySelector('.popup_opened');
-    closePopup(popupOpened);
-  }
-}
-
-function disableButton(button, inactiveButtonClass) {
-  button.disabled = true;
-  button.classList.add(`${inactiveButtonClass}`)
 }

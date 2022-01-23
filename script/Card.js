@@ -1,5 +1,5 @@
 export {Card};
-import {popupImage} from './index.js';
+import {popupImage, openPopup} from './utils.js';
 
 
 class Card {
@@ -35,18 +35,11 @@ class Card {
   }
 
   _handleOpenPopup() {
-    popupImage.classList.add('popup_opened');
-    popupImage.querySelector('.popup__photo').src = this._link;
-    popupImage.querySelector('.popup__photo').alt = this._name;
+    openPopup(popupImage);
+    const image = popupImage.querySelector('.popup__photo');
+    image.src = this._link;
+    image.alt = this._name;
     popupImage.querySelector('.popup__photo-alt').textContent = this._name;
-  }
-
-  _handleClosePopup() {
-    popupImage.classList.remove('popup_opened');
-    popupImage.querySelector('.popup__photo').src = '';
-    popupImage.querySelector('.popup__photo').alt = '';
-    popupImage.querySelector('.popup__photo-alt').textContent = '';
-    
   }
 
   _handleLikeCard() {
@@ -54,7 +47,8 @@ class Card {
   }
 
   _handleDeleteCard() {
-    this._element.querySelector('.element__delete').closest('article').remove();
+    this._element.remove();
+    this._element = '';
   }
 
 	generateElement() {
