@@ -1,4 +1,4 @@
-export {popupImage, openPopup, closePopup}
+/*export {popupImage, openPopup, closePopup}
 
 const popupImage = document.querySelector('.popup-picture');
 
@@ -18,4 +18,4 @@ function closeByEsc(evt) {
     const popupOpened = document.querySelector('.popup_opened');
     closePopup(popupOpened);
    }
-}
+}*/

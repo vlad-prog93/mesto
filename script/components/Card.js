@@ -1,11 +1,11 @@
-export {Card};
-import {popupImage, openPopup} from './utils.js';
+//import {popupImage, openPopup} from '../utils/utils.js';
 
 
-class Card {
-	constructor(card, selector) {
+export default class Card {
+	constructor(card, selector, {handleCardClick}) {
 		this._name = card.name;
 		this._link = card.link;
+    this._handleCardClick = handleCardClick;
 		this._selector = selector;
 	}
 	
@@ -29,17 +29,9 @@ class Card {
     });
 
     this._element.querySelector('.element__button-photo').addEventListener('click', () => {
-      this._handleOpenPopup();
+      this._handleCardClick();
     });
 
-  }
-
-  _handleOpenPopup() {
-    openPopup(popupImage);
-    const image = popupImage.querySelector('.popup__photo');
-    image.src = this._link;
-    image.alt = this._name;
-    popupImage.querySelector('.popup__photo-alt').textContent = this._name;
   }
 
   _handleLikeCard() {
