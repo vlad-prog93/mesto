@@ -17,6 +17,7 @@ export default class FormValidator {
     this._buttonElement.disabled = true;
     this._buttonElement.classList.add(this._selectors.inactiveButtonClass);
   }
+
   disableButton() {
     this._buttonElement.disabled = false;
     this._buttonElement.classList.remove(this._selectors.inactiveButtonClass);
@@ -41,7 +42,6 @@ export default class FormValidator {
 
   _showInputError(inputElement) {
     const errorElement = this._formElement.querySelector(`.${inputElement.id}-error`);
-
     inputElement.classList.add(this._selectors.inputErrorClass);
     errorElement.textContent = inputElement.validationMessage;
     errorElement.classList.add(this._selectors.errorClass);
@@ -49,7 +49,6 @@ export default class FormValidator {
 
   _hideInputError(inputElement) {
     const errorElement = this._formElement.querySelector(`.${inputElement.id}-error`);
-
     inputElement.classList.remove(this._selectors.inputErrorClass);
     errorElement.classList.remove(this._selectors.errorClass);
     errorElement.textContent = '';

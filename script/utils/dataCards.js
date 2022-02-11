@@ -1,7 +1,5 @@
-export {initialCards}
-
 //Настройка для создания карточек
-const initialCards = [
+export const initialCards = [
     {
       name: 'Карачаевск',
       link: './images/element/karachaevsk.jpg'

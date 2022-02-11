@@ -1,12 +1,16 @@
-//import {popupImage, openPopup} from '../utils/utils.js';
-
-
 export default class Card {
 	constructor(card, selector, {handleCardClick}) {
 		this._name = card.name;
 		this._link = card.link;
+    this._selector = selector;
     this._handleCardClick = handleCardClick;
-		this._selector = selector;
+    this._element = this._getTemplate();
+    this._elementPhoto = this._element.querySelector('.element__photo');
+    this._elementPlace = this._element.querySelector('.element__place');
+    this._buttonLike = this._element.querySelector('.element__like');
+    this._buttonDelete = this._element.querySelector('.element__delete');
+    this._buttonPhoto = this._element.querySelector('.element__button-photo');
+
 	}
 	
 	_getTemplate() {
@@ -15,41 +19,29 @@ export default class Card {
 		.content
 		.querySelector(`.${this._selector}`)
 		.cloneNode(true);
-
 		return cardElement;
 	}
 
   _setEventListeners() {
-    this._element.querySelector('.element__like').addEventListener('click', () => {
-      this._handleLikeCard();
-    });
-
-    this._element.querySelector('.element__delete').addEventListener('click', () => {
-      this._handleDeleteCard();
-    });
-
-    this._element.querySelector('.element__button-photo').addEventListener('click', () => {
-      this._handleCardClick();
-    });
-
+    this._buttonLike.addEventListener('click', this._handleLikeCard.bind(this));
+    this._buttonDelete.addEventListener('click', this._handleDeleteCard.bind(this));
+    this._buttonPhoto.addEventListener('click', this._handleCardClick.bind(this));
   }
 
   _handleLikeCard() {
-    this._element.querySelector('.element__like').classList.toggle('element__like_active');
+    this._buttonLike.classList.toggle('element__like_active');
   }
 
   _handleDeleteCard() {
     this._element.remove();
-    this._element = '';
+    this._element = null;
   }
 
 	generateElement() {
-    this._element = this._getTemplate();
     this._setEventListeners();
-		this._element.querySelector('.element__photo').src = this._link;
-    this._element.querySelector('.element__photo').alt = this._name;
-		this._element.querySelector('.element__place').textContent = this._name;
-    
+		this._elementPhoto.src = this._link;
+    this._elementPhoto.alt = this._name;
+		this._elementPlace.textContent = this._name;
     return this._element;
 	}
 }
