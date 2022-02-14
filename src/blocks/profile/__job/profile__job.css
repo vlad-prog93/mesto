@@ -1,0 +1,44 @@
+.profile__job {
+  max-width: 320px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 400;
+  margin: 8px 0 0;
+}
+
+@media screen and (max-width: 1024px) {
+  .profile__job {
+    font-size: calc(0.00416 * 100vw + 12.66px);
+    line-height: calc(0.0052 * 100vw + 15.33px);
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .profile__job {
+    max-width: 300px;
+    text-align: center;
+    margin-top: 14px;
+  }
+}
+
+@media screen and (max-width: 525px) {
+  .profile__job {
+    max-width: 250px;
+    text-align: center;
+    margin-top: 14px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .profile__job {
+    max-width: 200px;
+    font-size: 14px;
+    line-height: 17px;
+    margin-top: 7px;
+  }
+}
+
