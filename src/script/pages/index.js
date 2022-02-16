@@ -2,6 +2,7 @@ import '../../pages/index.css';
 
 import {
         openButtonEdit, openButtonAdd, nameInputEdit, jobInputEdit,
+        formValidators, 
         formElementEdit, formElementAdd, selectors, dataUser
       } 
 from '../utils/constants.js';
@@ -14,13 +15,17 @@ import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import UserInfo from '../components/UserInfo.js';
 
+//отрисовка начального массива карточек
+const card = new Section({items: initialCards, 
+  renderer: (item) => {createCard (item)} }, '.elements');
+card.renderItems();
 
-//создание карточек
-const cardList = createCard(initialCards);
-cardList.renderItems();
+//создание класса для get и set информации профиля
+const userInfo = new UserInfo(dataUser);
 
-//слушатель кнопки на изменение профиля
+//слушатель кнопки на редактирование профиля
 openButtonEdit.addEventListener('click', () => {
+  formValidators[ formElementEdit.getAttribute('name') ].resetValidation();
   const info = userInfo.getUserInfo();
   nameInputEdit.value = info.name;
   jobInputEdit.value = info.job;
@@ -29,63 +34,51 @@ openButtonEdit.addEventListener('click', () => {
 
 //слушатель кнопки на добавление карточки
 openButtonAdd.addEventListener('click', () => {
-  formAdd.enableButton();
+  formValidators[ formElementAdd.getAttribute('name') ].resetValidation();
   popupAdd.open();
 });
+
+//создание попапа добавления карточки
+const popupAdd = new PopupWithForm('.popup-add', {submitForm: (evt) => {
+  evt.preventDefault();
+  const dataInputs = popupAdd.getInputValues();
+  const data = {name: dataInputs.placenamefield, link: dataInputs.placepicfield};
+  createCard(data);
+  popupAdd.close();
+}});
+popupAdd.setEventListeners();
 
 //создание попапа редактирования профиля
 const popupEdit = new PopupWithForm('.popup-edit', {submitForm: (evt) => {
   evt.preventDefault();
-  const dataInputs = popupEdit._getInputValues();
+  const dataInputs = popupEdit.getInputValues();
   const data = {name: dataInputs.namefield, job: dataInputs.jobfield};
-  console.log(data);
   userInfo.setUserInfo(data);
   popupEdit.close();
 }})
 popupEdit.setEventListeners();
 
-//создание попапа добавления карточки
-const popupAdd = new PopupWithForm('.popup-add', {submitForm: (evt) => {
-  evt.preventDefault();
-  const dataInputs = popupAdd._getInputValues();
-  createNewCard(dataInputs);
-  popupAdd.close();
-}});
-popupAdd.setEventListeners();
-
-
+//создание попапа открытия карточки
+const popupImage = new PopupWithImage('.popup-picture');
+popupImage.setEventListeners();
 
 //добавляем валидацию для форм
-const formEdit = new FormValidator(selectors, formElementEdit);
-formEdit.enableValidation();
-const formAdd = new FormValidator(selectors, formElementAdd);
-formAdd.enableValidation();
+function enableValidation(selectors) {
+  const formList = Array.from(document.querySelectorAll(selectors.formSelector));
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(selectors, formElement);
+    const formName = formElement.name;
+    formValidators[formName] = validator;
+    validator.enableValidation();
+  });
+};
+enableValidation(selectors);
 
-
-const userInfo = new UserInfo(dataUser);
-
-//создание новой карточки
-function createNewCard(data) {
-  const itemsNewCard = [{
-    name: data.placenamefield,
-    link: data.placepicfield
-  }]
-  const newCard = createCard(itemsNewCard);
-  newCard.renderItems();
-}
-
-//создание карточек при загрузке сайта
-function createCard(itemsNewCard) {
-  const card = new Section({items: itemsNewCard, 
-    renderer: (item) => {
-      const cardItem = new Card(item, 'element', { handleCardClick: () => {
-        const popupImage = new PopupWithImage('.popup-picture', item);
-        popupImage.open(item);
-        popupImage.setEventListeners();
-      } });
-      const cardElement = cardItem.generateElement();
-      card.addItem(cardElement);
-    }
-  }, '.elements');
-  return card;
+//функция создание карточки
+function createCard (item) {
+  const cardItem = new Card(item, 'element', { handleCardClick: () => {
+    popupImage.open(item);
+  }});
+  const cardElement = cardItem.generateElement();
+  card.addItem(cardElement);
 }

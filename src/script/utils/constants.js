@@ -11,7 +11,7 @@ export const formElementEdit = popupEdit.querySelector('.popup__form');
 export const formElementAdd = popupAdd.querySelector('.popup__form');
 export const dataUser = {name: '.profile__name', job: '.profile__job'};
 
-
+export const formValidators = {};
 // Настройка для форм
 export const selectors = {
   formSelector: '.popup__form',
