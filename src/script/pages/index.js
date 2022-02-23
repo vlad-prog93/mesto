@@ -16,6 +16,12 @@ import PopupWithForm from '../components/PopupWithForm.js';
 import UserInfo from '../components/UserInfo.js';
 import Api from '../components/Api.js';
 
+// создание класса для отображения карточек
+const card = new Section({ renderer: (item) => {
+  console.log(item);
+  createCard(item);
+}},
+ '.elements');
 
 //создание класса для get и set информации профиля
 const userInfo = new UserInfo(dataUser);
@@ -40,8 +46,13 @@ const popupAdd = new PopupWithForm('.popup-add', {submitForm: (evt) => {
   evt.preventDefault();
   const dataInputs = popupAdd.getInputValues();
   const data = {name: dataInputs.placenamefield, link: dataInputs.placepicfield};
-  card.addItem(createCard(data));
-  apiPostCards.setCardApi(data);
+  apiPostCards.setCardApi(data)
+    .then( result => result.json())
+    .then( data => {
+      console.log(data);
+      createCard(data);
+
+    })
   popupAdd.close();
 }});
 popupAdd.setEventListeners();
@@ -52,7 +63,6 @@ const popupEdit = new PopupWithForm('.popup-edit', {submitForm: (evt) => {
   const dataInputs = popupEdit.getInputValues();
   const data = {name: dataInputs.namefield, job: dataInputs.jobfield};
   userInfo.setUserInfo(data);
-  
   apiPatchProfile.setProfileApi(data);
   popupEdit.close();
 }})
@@ -76,10 +86,9 @@ enableValidation(selectors);
 
 //функция создание карточки
 function createCard (item) {
-  const cardItem = new Card(item, 'element', { handleCardClick: () => {
-    popupImage.open(item);
-  }});
-  return cardItem.generateElement();
+  const cardItem = new Card(item, 'element', { handleCardClick: () => {popupImage.open(item)}});
+  const cardElement = cardItem.generateElement();
+  return card.addItem(cardElement);
 }
 
 
@@ -101,14 +110,9 @@ const apiPatchProfile = new Api (optionsProfile, 'PATCH', { render: null });
 
 //получение карточек
 const apiGetCards = new Api(optionsCards, 'GET', { render: (initialCards) => {
-  const card = new Section({items: initialCards, 
-    renderer: (item) => {
-      const cardElement = createCard(item);
-      card.addItem(cardElement);
-    }}, '.elements');
-  card.renderItems();
+  card.renderItems(initialCards);
 }});
 apiGetCards.getApi();
 
-
-const card = new Section({items: [], renderer: null}, '.elements');
+// Удаление карточки
+//const apiDeleteCard = new Api (optionsCards, 'DELETE', {}) 

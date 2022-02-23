@@ -16,9 +16,26 @@ export default class Api {
     .then(res => res.json())
     .then(result => {this._render(result)})
   }
-
+/*
+  deleteCard(cardId) {
+    return fetch(this._url + cardId, {
+      method: this._method,
+      headers: {
+        authorization: this._token
+      },
+    })
+    .then(res => {
+      if (res.ok) {
+          return Promise.resolve('User deleted.');
+      } else {
+          return Promise.reject('An error occurred.');
+      }
+    })
+    .then(res => console.log(res));
+  }
+*/
   setCardApi(card) {
-    fetch(this._url, {
+    return fetch(this._url, {
       method: this._method,
       headers: {
         authorization: this._token,
