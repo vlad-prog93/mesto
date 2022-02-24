@@ -13,12 +13,17 @@ import FormValidator from '../components/FormValidation.js';
 import Section from '../components/Section.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
+import PopupDeleteCard from '../components/pupupDeleteCard';
 import UserInfo from '../components/UserInfo.js';
 import Api from '../components/Api.js';
 
 // создание класса для отображения карточек
 const card = new Section({ renderer: (item) => {
-  console.log(item);
+  //console.log(item);
+  if (item.owner._id == "78e5562678713e56b6e7ed3f") {
+    console.log('мой id', '=' ,"78e5562678713e56b6e7ed3f");
+  }
+  console.log(item.owner._id);
   createCard(item);
 }},
  '.elements');
@@ -72,6 +77,17 @@ popupEdit.setEventListeners();
 const popupImage = new PopupWithImage('.popup-picture');
 popupImage.setEventListeners();
 
+//создание попапа удаление карточки
+const popupDeleteCard = new PopupDeleteCard('.popup-delete-card', { submitForm: (evt, card) => {
+  evt.preventDefault();
+  apiDeleteCard.deleteCard(card._id);
+  popupDeleteCard.close();
+  console.log('https://nomoreparties.co/v1/cohort36/cards' + '/' + card._id);
+
+}
+});
+popupDeleteCard.setEventListeners();
+
 //добавляем валидацию для форм
 function enableValidation(selectors) {
   const formList = Array.from(document.querySelectorAll(selectors.formSelector));
@@ -86,7 +102,11 @@ enableValidation(selectors);
 
 //функция создание карточки
 function createCard (item) {
-  const cardItem = new Card(item, 'element', { handleCardClick: () => {popupImage.open(item)}});
+  const cardItem = new Card(item, 'element', { 
+    handleCardClick: () => {popupImage.open(item)},
+    handleDeleteCard: () => {popupDeleteCard.open(item)},
+    
+  });
   const cardElement = cardItem.generateElement();
   return card.addItem(cardElement);
 }
@@ -104,7 +124,6 @@ apiGetProfile.getApi();
 //создание новой карточки
 const apiPostCards = new Api (optionsCards, 'POST', { render : null})
 
-
 // Отправить на сервер информацию о профиле
 const apiPatchProfile = new Api (optionsProfile, 'PATCH', { render: null });
 
@@ -115,4 +134,4 @@ const apiGetCards = new Api(optionsCards, 'GET', { render: (initialCards) => {
 apiGetCards.getApi();
 
 // Удаление карточки
-//const apiDeleteCard = new Api (optionsCards, 'DELETE', {}) 
+const apiDeleteCard = new Api (optionsCards, 'DELETE', {render : null}) 
