@@ -9,7 +9,12 @@ export const jobInputEdit = popupEdit.querySelector('.popup-job');
 
 export const formElementEdit = popupEdit.querySelector('.popup__form');
 export const formElementAdd = popupAdd.querySelector('.popup__form');
+
 export const dataUser = {name: '.profile__name', job: '.profile__job'};
+export const nameEdit = document.querySelector(`${dataUser.name}`);
+export const jobEdit = document.querySelector(`${dataUser.job}`);
+export const avatar = document.querySelector('.profile__avatar');
+
 
 export const formValidators = {};
 // Настройка для форм

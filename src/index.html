@@ -16,7 +16,7 @@
     <main class="main">
 
       <section class="profile">
-        <img src="<%=require('./images/profile/avatar.jpg')%>" alt="Аватарка" class="profile__avatar">
+        <input type="image" class="profile__button-avatar profile__avatar" src="#" alt="Аватарка"></input>
         <div class="profile__info">
           <div class="profile__property">
             <h1 class="profile__name">Жак-Ив Кусто</h1>
@@ -63,6 +63,17 @@
       </div>
     </div>
 
+    <div class="popup popup-delete-card">
+      <div class="popup__container">
+        <button class="popup__close" type="button" aria-label="Закрыть"></button>
+        <h2 class="popup__edit">Вы уверены?</h2>
+        <form class="popup__form" name="formadd" novalidate>
+          <button class="popup__save" type="submit">Да</button>
+        </form>
+      </div>
+    </div>
+
+
     <div class="popup popup-picture">
       <figure class="popup__photo-container">
         <button class="popup__close" type="button" aria-label="Закрыть"></button>
@@ -78,7 +89,10 @@
       <button class="element__button-photo"><img class="element__photo"></button>
       <div class="element__info">
         <h2 class="element__place"></h2>
-        <button class="element__like" type="button" aria-label="Лайк"></button>
+        <div class="element__like-area">
+          <button class="element__like" type="button" aria-label="Лайк"></button>
+          <span class="element__like-count"></span>
+        </div>
       </div>
       <button class="element__delete" type="button" aria-label="Удалить"></button>
     </article>
