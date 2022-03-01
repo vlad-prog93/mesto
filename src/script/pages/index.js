@@ -65,7 +65,6 @@ openButtonEdit.addEventListener('click', () => {
 //слушатель кнопки на добавление карточки
 openButtonAdd.addEventListener('click', () => {
   formValidators[ formElementAdd.getAttribute('name') ].resetValidation();
-  console.log(popupAdd.getInputValues())
   popupAdd.open();
 });
 
@@ -136,6 +135,7 @@ function enableValidation(selectors) {
     const validator = new FormValidator(selectors, formElement);
     const formName = formElement.name;
     formValidators[formName] = validator;
+    console.log(formValidators[formName])
     validator.enableValidation();
   });
 };
