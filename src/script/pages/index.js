@@ -125,8 +125,13 @@ const popupEdit = new PopupWithForm('.popup-edit', 'Сохранить', {submit
 //создание экземпляра попапа удаления карточки
 const popupDeleteCard = new PopupWithAlert('.popup-delete-card', {submitForm: (evt) => {
   evt.preventDefault();
-  deleteCard(popupDeleteCard.cardItem);
-  popupDeleteCard.close();
+  const cardItem = popupDeleteCard.cardItem;
+  api.deleteCard(dataCallApi, cardItem._idCard)
+  .then(() => {
+    cardItem.deleteCard()
+    popupDeleteCard.close();
+  })
+  .catch(err => console.log(`Ошибка ${err}`));
 }})
 
 //создание экземпляра попапа редактирования фотографии
@@ -157,13 +162,6 @@ function enableValidation(selectors) {
   });
 };
 enableValidation(selectors);
-
-//функция удаления карточки
-function deleteCard(cardItem) {
-  api.deleteCard(dataCallApi, cardItem._idCard)
-  .then(() => cardItem.deleteCard())
-  .catch(err => console.log(`Ошибка ${err.status}`));
-}
 
 //добавляем слушатели на попапы
 popupAdd.setEventListeners();
