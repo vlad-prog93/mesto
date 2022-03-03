@@ -1,5 +1,5 @@
 export default class Card {
-	constructor(card, profileId, selector, {handleCardClick, handleDeleteCard, handleLikeCard}) {
+	constructor(card, userInfoId, selector, {handleCardClick, handleDeleteCard, handleLikeCard}) {
 		this._name = card.name;
 		this._link = card.link;
     this._idCard = card._id;
@@ -16,7 +16,8 @@ export default class Card {
     this._buttonDelete = this._element.querySelector('.element__delete');
     this._buttonPhoto = this._element.querySelector('.element__button-photo');
     this.countLike = this._element.querySelector('.element__like-count');
-    this._profileId = profileId;
+    this._buttonDelete = this._element.querySelector('.element__delete');
+    this._profileId = userInfoId;
 	}
 	
 	getTemplate() {
@@ -33,14 +34,14 @@ export default class Card {
     this._buttonPhoto.addEventListener('click', this._handleCardClick.bind(this));
   }
 
-  addLikeCard() {
-    this._buttonLike.classList.add('element__like_active');
-    this.countLike.textContent = this.countLikeCard.length;
+  checkLike() {
+    if (this._buttonLike.classList.contains("element__like_active")) return true
+    return false
   }
 
-  deleteLikeCard() {
-    this._buttonLike.classList.remove('element__like_active');
-    this.countLike.textContent = this.countLikeCard.length;
+  updateLikes(countLikes) {
+    this._buttonLike.classList.toggle('element__like_active');
+    this.countLike.textContent = countLikes.length;
   }
 
   deleteCard() {
@@ -50,19 +51,19 @@ export default class Card {
 
   _checkCardOwn() {
     if (this._ownId == this._profileId) {
-      this._element.insertAdjacentHTML('afterbegin', '<button class="element__delete" type="button" aria-label="Удалить"></button>');
-      this._buttonDelete = this._element.querySelector('.element__delete');
       this._buttonDelete.addEventListener('click', this._handleDeleteCard.bind(this))
+    } else {
+      this._buttonDelete.remove()
     }
   }
 
   isliked() {
     this.countLikeCard.forEach((likes) => {
       if (this._profileId == likes._id) {
-        this.addLikeCard()
+        this.updateLikes(this.countLikeCard)
       }
     })
-    
+    this.countLike.textContent = this.countLikeCard.length;
   }
 
 	generateElement() {
@@ -70,7 +71,6 @@ export default class Card {
 		this._elementPhoto.src = this._link;
     this._elementPhoto.alt = this._name;
 		this._elementPlace.textContent = this._name;
-    this.countLike.textContent = this.countLikeCard.length; // Отображение количества лайков карточки
     this.isliked();
     this._checkCardOwn(); // Отображение кнопки delete только на свои карточки
     return this._element;

@@ -1,98 +1,87 @@
 export default class Api {
   constructor(options) {
     this._url = options.baseUrl;
-    this._token = options.authorization;
-
+    this._headers = {
+      authorization: options.authorization, 
+      'Content-Type': options['Content-Type']
+    } 
   }
 
-  getApi() {
-    return fetch(`${this._url}`, {
-      headers: {
-        authorization: this._token
-      }
+  getCards(dataCallApi) {
+    return fetch(`${this._url}/${dataCallApi.cards}`, {
+      headers: this._headers
     })
-    .then(res => res.json())
-    .catch((res) => console.log(`Ошибка ${res.status}`));
+    .then(this._checkResponse)
   }
-  
-  patchApi(data) {
-    return fetch(`${this._url}`, {
+
+  getUserData(dataCallApi) {
+    return fetch(`${this._url}/${dataCallApi.users}/${dataCallApi.me}`, {
+      headers: this._headers
+    })
+    .then(this._checkResponse)
+  }
+
+  patchEditProfile(dataCallApi, data) {
+    return fetch(`${this._url}/${dataCallApi.users}/${dataCallApi.me}`, {
       method: 'PATCH',
-      headers: {
-        authorization: this._token,
-        'Content-Type': 'application/json'
-      },
+      headers: this._headers,
       body: JSON.stringify({
         name: data.name,
-        about: data.job
+        about: data.about
       })
     })
-    .then(res => res.json())
-    .catch((res) => console.log(`Ошибка ${res.status}`));
+    .then(this._checkResponse);
   }
 
-  postApi(data) {
-    return fetch(`${this._url}`, {
+  postCard(dataCallApi, data) {
+    return fetch(`${this._url}/${dataCallApi.cards}`, {
       method: 'POST',
-      headers: {
-        authorization: this._token,
-        'Content-Type': 'application/json'
-      },
+      headers: this._headers,
       body: JSON.stringify({
         name: data.name,
         link: data.link
       })
     })
-    .then(res => res.json())
-    .catch((res) => console.log(`Ошибка ${res.status}`));
+    .then(this._checkResponse);
   }
 
-  deleteCard(dataId) {
-    return fetch(`${this._url}/${dataId}`, {
+  deleteCard(dataCallApi, dataId) {
+    return fetch(`${this._url}/${dataCallApi.cards}/${dataId}`, {
       method: 'DELETE',
-      headers: {
-        authorization: this._token,
-      },
+      headers: this._headers,
     })
-    .then(res => res.json())
-    .catch((res) => console.log(`Ошибка ${res.status}`));
+    .then(this._checkResponse);
   }
 
-  setLike(cardId) {
-    return fetch(`${this._url}/${cardId}/likes`, {
+  setLike(dataCallApi, cardId) {
+    return fetch(`${this._url}/${dataCallApi.cards}/${cardId}/${dataCallApi.likes}`, {
       method: 'PUT',
-      headers: {
-        authorization: this._token,
-      },
+      headers: this._headers,
     })
-    .then(res => res.json())
-    .catch((res) => console.log(`Ошибка ${res.status}`));
+    .then(this._checkResponse);
   }
 
-  deleteLike(cardId) {
-    return fetch(`${this._url}/${cardId}/likes`, {
+  deleteLike(dataCallApi, cardId) {
+    return fetch(`${this._url}/${dataCallApi.cards}/${cardId}/${dataCallApi.likes}`, {
       method: 'DELETE',
-      headers: {
-        authorization: this._token,
-      },
+      headers: this._headers,
     })
-    .then(res => res.json())
-    .catch((res) => console.log(`Ошибка ${res.status}`));
+    .then(this._checkResponse);
   }
 
-  patchAvatarApi(avatar) {
-    return fetch(`${this._url}/avatar`, {
+  patchAvatarApi(dataCallApi, avatar) {
+    return fetch(`${this._url}/${dataCallApi.users}/${dataCallApi.me}/${dataCallApi.avatar}`, {
       method: 'PATCH',
-      headers: {
-        authorization: this._token,
-        'Content-Type': 'application/json'
-      },
+      headers: this._headers,
       body: JSON.stringify({
         avatar: avatar
       })
     })
-    .then(res => res.json())
-    .catch((res) => console.log(`Ошибка ${res.status}`));
+    .then(this._checkResponse);
   }
 
+  _checkResponse(res) {
+    if (res.ok) return res.json()
+    return Promise.reject(`Ошибка ${res.status}`);
+  }
 }

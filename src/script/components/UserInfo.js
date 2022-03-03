@@ -6,16 +6,17 @@ export default class UserInfo {
   }
 
   getUserInfo() {
-    const data = {name: this._name.textContent, job: this._job.textContent};
-    return data
+    return {
+      name: this._name.textContent, 
+      job: this._job.textContent,
+      avatar: this._avatar,
+    };
   }
 
-  setUserInfo(newDataUser) {
-    this._name.textContent = newDataUser.name;
-    this._job.textContent = newDataUser.job;
-  }
-
-  setUserAvatar(data) {
-    this._avatar.src = data;
+  setUserInfo({name, about, avatar, _id}) {
+    this._name.textContent = name;
+    this._job.textContent = about;
+    this._avatar.src = avatar;
+    this.id = _id;
   }
 }

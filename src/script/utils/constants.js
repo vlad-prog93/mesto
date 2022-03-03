@@ -14,11 +14,6 @@ export const formElementAdd = popupAdd.querySelector('.popup__form');
 export const formElementAvatar = popupAvatar.querySelector('.popup__form');
 
 export const dataUser = {name: '.profile__name', job: '.profile__job', avatar: '.profile__avatar'};
-export const nameEdit = document.querySelector(`${dataUser.name}`);
-export const jobEdit = document.querySelector(`${dataUser.job}`);
-export const avatar = document.querySelector(`${dataUser.avatar}`);
-
-
 
 export const formValidators = {};
 
@@ -32,12 +27,16 @@ export const selectors = {
   errorClass: 'popup__input-error_active'
 };
 
-export const infoProfile = {
-  baseUrl: 'https://nomoreparties.co/v1/cohort36/users/me',
+export const dataForApi = {
+  baseUrl: 'https://nomoreparties.co/v1/cohort36/',
   authorization: '4073624b-bfe3-4826-9ea5-3a6732e5b59a',
+  'Content-Type': 'application/json',
 }
 
-export const infoCards = {
-  baseUrl: 'https://nomoreparties.co/v1/cohort36/cards',
-  authorization: '4073624b-bfe3-4826-9ea5-3a6732e5b59a', 
+export const dataCallApi = {
+  users: 'users',
+  me: 'me',
+  cards: 'cards',
+  avatar: 'avatar',
+  likes: 'likes',
 }
